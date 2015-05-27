@@ -1,3 +1,1 @@
-:set -Wall -fno-warn-name-shadowing
-:set -i.
-:load Data.Graph.Wrapper
+:set -isrc -Wall -fno-warn-name-shadowing
