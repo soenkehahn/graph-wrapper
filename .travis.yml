@@ -16,5 +16,6 @@ before_install:
   - cabal --version
 
 script:
-  - cabal configure --enable-tests --ghc-options='-Wall' && cabal build && cabal test
-  - cabal install --ghc-options='-Wall'
+  - export GHC_OPTIONS='-Werror -Wall -fno-warn-name-shadowing'
+  - cabal configure --enable-tests "--ghc-options=$GHC_OPTIONS" && cabal build && cabal test
+  - cabal install "--ghc-options=$GHC_OPTIONS"

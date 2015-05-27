@@ -2,10 +2,13 @@
 --
 -- Use of this module should be avoided as it will change frequently and changes to this module alone will not necessarily
 -- follow the Package Versioning Policy.
+{-# LANGUAGE CPP #-}
 {-# OPTIONS_HADDOCK not-home #-}
 module Data.Graph.Wrapper.Internal where
 
+#if !MIN_VERSION_base(4,8,0)
 import Control.Applicative (Applicative)
+#endif
 
 import Data.Array
 import Data.Maybe (fromMaybe)
