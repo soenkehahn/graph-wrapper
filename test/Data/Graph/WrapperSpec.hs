@@ -21,3 +21,12 @@ spec = do
       it "returns the empty list" $ do
         reachableVertices (fromList [] :: Graph Integer ()) 0
           `shouldBe` []
+
+  describe "depthNumbering" $ do
+    it "ignores non-existing given roots" $ do
+      let graph :: Graph Int Int
+          graph = fromListSimple $
+            (1, [1]) :
+            []
+      toList (depthNumbering graph [-1]) `shouldBe`
+        [(1, (1, Nothing), [1])]
