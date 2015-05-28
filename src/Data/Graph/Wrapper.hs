@@ -13,24 +13,24 @@
 --   by David King and John Launchbury
 module Data.Graph.Wrapper (
     Edge, Graph,
-    
+
     vertex,
-    
+
     fromListSimple, fromList, fromListLenient, fromListBy, fromVerticesEdges,
     toList,
-    
+
     vertices, edges, successors,
-    
+
     outdegree, indegree,
-    
+
     transpose,
-    
+
     reachableVertices, hasPath,
-    
+
     topologicalSort, depthNumbering,
-    
+
     SCC(..), stronglyConnectedComponents, sccGraph,
-    
+
     traverseWithKey
   ) where
 
@@ -119,9 +119,9 @@ fromList' lenient vertices = G graph key_map vertex_map
     max_v           = length vertices - 1
     bounds0         = (0, max_v) :: (G.Vertex, G.Vertex)
     sorted_vertices = sortBy (comparing fst3) vertices
-    
+
     index_vertex = if lenient then mapMaybe (indexGVertex'_maybe key_map) else map (indexGVertex' key_map)
-    
+
     graph       = array bounds0 $ [0..] `zip` map (index_vertex . thd3) sorted_vertices
     key_map     = array bounds0 $ [0..] `zip` map fst3                  sorted_vertices
     vertex_map  = array bounds0 $ [0..] `zip` map snd3                  sorted_vertices
@@ -190,14 +190,14 @@ depthNumbering g is = runST $ do
     -- recording the depth at which any node was seen in that array.
     let gos seen depth gvs = mapM_ (go seen depth) gvs
 
-        go seen depth gv 
+        go seen depth gv
           | depth `seq` False = error "depthNumbering: unreachable"
           | gv `IS.member` seen = return ()
           | otherwise = do
             gv `atDepth` depth
             gos (IS.insert gv seen) (depth + 1) (graph g ! gv)
     gos IS.empty 0 (map (indexGVertex g) is)
-    
+
     -- let go _    _     []  = return ()
     --     go seen depth gvs = do
     --         let go_one (seen, next_gvs) gv
@@ -206,9 +206,9 @@ depthNumbering g is = runST $ do
     --                                return (IS.insert gv seen, next_gvs ++ (graph g ! gv))
     --         (seen, next_gvs) <- foldM go_one (seen, []) gvs
     --         go seen (depth + 1) next_gvs
-    -- 
+    --
     -- go IS.empty 0 (map (indexGVertex g) is)
-    
+
     gvva <- amapWithKeyM (\gv v -> liftM (\mb_depth -> (v, mb_depth)) $ readArray depth_array gv) (gVertexVertexArray g)
     return $ g { gVertexVertexArray = gvva }
 
@@ -247,7 +247,7 @@ stronglyConnectedComponents g = map decode forest
                          | otherwise         = AcyclicSCC (gVertexIndex g v)
     decode other = CyclicSCC (dec other [])
       where dec (G.Node v ts) vs = gVertexIndex g v : foldr dec vs ts
-    
+
     mentions_itself v = v `elem` (graph g ! v)
 
 -- | The graph formed by the strongly connected components of the input graph. Each node in the resulting
@@ -259,7 +259,7 @@ sccGraph g = fromList nodes'
     -- When we do a lookup, it is sufficient to look in the map accumulated so far because nodes that are successors
     -- of a SCC must occur to the *left* of it in the list.
     (_final_i2scc_i, nodes') = mapAccumL go M.empty (stronglyConnectedComponents g)
-    
+
     --go :: M.Map i (S.Set i) -> SCC i -> (M.Map i (S.Set i), (S.Set i, M.Map i v, [S.Set i]))
     go i2scc_i scc = (i2scc_i', (scc_i,
                                  Foldable.foldMap (\i -> M.singleton i (vertex g i)) scc,
