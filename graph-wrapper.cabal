@@ -1,4 +1,4 @@
-Cabal-Version:      >= 1.6
+Cabal-Version:      >= 1.8
 Build-Type:         Simple
 Name:               graph-wrapper
 Version:            0.2.5
@@ -8,6 +8,7 @@ License:            BSD3
 License-File:       LICENSE
 Author:             Max Bolingbroke
 Synopsis:           A wrapper around the standard Data.Graph with a less awkward interface
+Description:        A wrapper around the standard Data.Graph with a less awkward interface
 Category:           Data Structures, Graphs
 
 source-repository head
