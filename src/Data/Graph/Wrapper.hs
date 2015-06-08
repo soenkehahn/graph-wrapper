@@ -165,7 +165,10 @@ topologicalSort g = map (gVertexIndex g) $ G.topSort (graph g)
 
 -- | List all of the vertices reachable from the given starting point
 reachableVertices :: Ord i => Graph i v -> i -> [i]
-reachableVertices g = map (gVertexIndex g) . G.reachable (graph g) . indexGVertex g
+reachableVertices g i =
+  if i `elem` vertices g
+    then map (gVertexIndex g) $ G.reachable (graph g) $ indexGVertex g i
+    else []
 
 -- | Is the second vertex reachable by following edges from the first vertex?
 --
