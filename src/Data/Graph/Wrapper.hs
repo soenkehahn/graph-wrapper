@@ -179,6 +179,7 @@ hasPath g i1 = (`elem` reachableVertices g i1)
 
 -- | Number the vertices in the graph by how far away they are from the given roots. The roots themselves have depth 0,
 -- and every subsequent link we traverse adds 1 to the depth. If a vertex is not reachable it will have a depth of 'Nothing'.
+-- Root vertices that are not in the graph will be ignored.
 depthNumbering :: Ord i => Graph i v -> [i] -> Graph i (v, Maybe Int)
 depthNumbering g is = runST $ do
     -- This array records the minimum known depth for the node at the moment
@@ -199,7 +200,9 @@ depthNumbering g is = runST $ do
           | otherwise = do
             gv `atDepth` depth
             gos (IS.insert gv seen) (depth + 1) (graph g ! gv)
-    gos IS.empty 0 (map (indexGVertex g) is)
+
+        allVertices = S.fromList (vertices g)
+    gos IS.empty 0 (map (indexGVertex g) (filter (`S.member` allVertices) is))
 
     -- let go _    _     []  = return ()
     --     go seen depth gvs = do
