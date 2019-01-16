@@ -21,3 +21,29 @@ spec = do
       it "returns the empty list" $ do
         reachableVertices (fromList [] :: Graph Integer ()) 0
           `shouldBe` []
+
+  describe "Eq Graph" $ do
+    context "when the graphs are identical" $ do
+      it "returns True" $ do
+        let g1 = fromList [('a','a',['a','b','c']), ('b','b',['b','c']), ('c','c',['a'])]
+        let g2 = fromList [('a','a',['a','b','c']), ('b','b',['b','c']), ('c','c',['a'])]
+        (g1 == g2)
+          `shouldBe` True
+    context "when the vertices are listed in a different order" $ do
+      it "returns True" $ do
+        let g1 = fromList [('a','a',['a','b','c']), ('b','b',['b','c']), ('c','c',['a'])]
+        let g2 = fromList [('b','b',['b','c']), ('c','c',['a']), ('a','a',['a','b','c'])]
+        (g1 == g2)
+          `shouldBe` True
+    context "when the edges are listed in a different order" $ do
+      it "returns True" $ do
+        let g1 = fromList [('a','a',['a','b','c']), ('b','b',['b','c']), ('c','c',['a'])]
+        let g2 = fromList [('a','a',['b','c','a']), ('b','b',['c','b']), ('c','c',['a'])]
+        (g1 == g2)
+          `shouldBe` True
+    context "when the graphs are different" $ do
+      it "returns False" $ do
+        let g1 = fromList [('a','a',['a','b','c']), ('b','b',['b','c']), ('c','c',['a'])]
+        let g2 = fromList [('a','a',['a','b','c']), ('b','b',['b','a']), ('c','c',['a'])]
+        (g1 == g2)
+          `shouldBe` False
