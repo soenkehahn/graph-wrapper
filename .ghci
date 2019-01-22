@@ -1,1 +1,1 @@
-:set -isrc -itest -Wall -fno-warn-name-shadowing -optP-include -optPdist/build/autogen/cabal_macros.h
+:set -isrc -itest -Wall -fno-warn-name-shadowing -optP-include -optP.stack-work/dist/x86_64-linux-tinfo6/Cabal-2.4.0.1/build/spec/autogen/cabal_macros.h
