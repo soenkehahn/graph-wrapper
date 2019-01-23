@@ -29,6 +29,12 @@ spec = do
         let g2 = fromList [('a', 'a', ['a', 'b', 'c']), ('b', 'b', ['b', 'c']), ('c', 'c', ['a'])]
         g1 == g2 `shouldBe` True
 
+    context "when the graphs are isomorphic" $ do
+      it "returns False" $ do
+        let g1 = fromList [('1','a',['2']), ('2','b',[])]
+        let g2 = fromList [('2','a',['1']), ('1','b',[])]
+        g1 == g2 `shouldBe` False
+
     context "when the vertices are listed in a different order" $ do
       it "returns True" $ do
         let g1 = fromList [('a', 'a', ['a', 'b', 'c']), ('b', 'b', ['b', 'c']), ('c', 'c', ['a'])]
