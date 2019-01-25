@@ -11,6 +11,7 @@ import Control.Applicative (Applicative)
 #endif
 
 import Data.Array
+import Data.List (sort)
 import Data.Maybe (fromMaybe)
 import qualified Data.Graph as G
 
@@ -32,6 +33,11 @@ data Graph i v = G {
     indexGVertexArray :: Array G.Vertex i,
     gVertexVertexArray :: Array G.Vertex v
   }
+
+instance (Ord i, Eq v) => Eq (Graph i v) where
+  g1 == g2 = fmap sort (graph g1) == fmap sort (graph g2)
+          && indexGVertexArray g1 == indexGVertexArray g2
+          && gVertexVertexArray g1 == gVertexVertexArray g2
 
 instance (Ord i, Show i, Show v) => Show (Graph i v) where
     show g = "fromVerticesEdges " ++ show ([(i, vertex g i) | i <- vertices g]) ++ " " ++ show (edges g)
