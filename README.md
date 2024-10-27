@@ -1,3 +1,5 @@
+**Note: I (@soenkehahn) don't actively use or maintain this project anymore. If you have an interest in taking on maintainership, let me know!**
+
 # graph-wrapper
 
 A wrapper around the standard Data.Graph with a less awkward interface.
